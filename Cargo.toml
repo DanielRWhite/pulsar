@@ -7,16 +7,22 @@ edition = "2021"
 [lib]
 crate-type = [ "rlib" ]
 
-[workspace]
-members = [ "crates/*" ]
+# [workspace]
+# members = [ "crates/*" ]
 
 [dependencies]
-tokio = { version = "1.25.0", features = [ "full" ]}
+ahash = "0.8.3"
+tokio = { version = "1.25.0", features = [ "full" ] }
 
 [dev-dependencies]
-criterion = "*"
-rand = "*"
+criterion = "0.4.0"
+
+[profile.bench]
+opt-level = 3
+strip = true
+lto = true
+debug = true
 
 [[bench]]
-name = "main"
+name = "world"
 harness = false
