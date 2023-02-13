@@ -1,4 +1,4 @@
 pub mod world;
 pub mod entity;
 pub mod component;
-pub mod archetypes;
+pub mod system;
