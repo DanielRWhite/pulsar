@@ -45,7 +45,7 @@ impl World {
         }
 
         #[allow(dead_code)]
-        pub fn update_system(&self, _system: System) {
+        pub fn update_system(&self, _system: impl System) {
                 todo!()
         }
 

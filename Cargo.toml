@@ -5,15 +5,15 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-crate-type = [ "rlib" ]
+crate-type = [ "lib" ]
 
 # [workspace]
 # members = [ "crates/*" ]
 
 [dependencies]
 ahash = "0.8.3"
-hex = "0.4.3"
-tokio = { version = "1.25.0", features = [ "full" ] }
+# hex = "0.4.3"
+# tokio = { version = "1.25.0", features = [ "full" ] }
 
 [dev-dependencies]
 criterion = "0.4.0"
@@ -22,7 +22,10 @@ criterion = "0.4.0"
 opt-level = 3
 strip = true
 lto = true
-debug = true
+codegen-units = 1
+debug-assertions = false
+overflow-checks = true
+panic = "abort"
 
 [[bench]]
 name = "world"

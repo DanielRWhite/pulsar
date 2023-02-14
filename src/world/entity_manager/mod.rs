@@ -71,7 +71,7 @@ impl EntityManager {
                 let archetype = entity.get_archetype();
                 let entity_id = entity.get_id();
 
-                if let Some(_) = self.entities.get(&entity_id) {
+                if let Some(ent) = self.entities.get(&entity_id) {
                         return Err(Box::new(Error::new(ErrorKind::Other, "Entity with that ID already exists")))
                 }
 
