@@ -7,20 +7,11 @@ edition = "2021"
 [lib]
 crate-type = [ "lib" ]
 
-[workspace]
-members = [ "crates/*" ]
-
 [features]
-default = [ "prost", "ecs", "instancing" ]
-prost = [ "dep:prost" ]
-ecs = [ "dep:ahash" ]
-instancing = [ "dep:pulsar-instancing" ]
+default = [ ]
 
 [dependencies]
-ahash = { version = "0.8.3", optional = true }
-prost = { version = "0.11.6", optional = true }
-pulsar-instancing = { path = "crates/pulsar-instancing", optional = true }
-tokio = { version = "1.25.0", features = [ "full" ] }
+ahash = "*"
 tower = "*"
 
 [dev-dependencies]

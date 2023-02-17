@@ -1,3 +1,4 @@
-#[cfg(feature = "instancing")]
 pub mod instance;
 pub mod connector;
+pub mod interactor;
+pub mod message;
