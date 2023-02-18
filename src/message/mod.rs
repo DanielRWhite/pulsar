@@ -1,5 +1,5 @@
 #[derive(Copy, Clone)]
-pub struct Message<T, R>(T, R);
+pub struct Message<T: Sized, R: Sized>(T, R);
 
 impl<T, R> Message<T, R>
 where

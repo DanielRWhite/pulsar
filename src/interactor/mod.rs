@@ -1,11 +1,14 @@
-use crate::message::Message;
+pub mod router;
 
-pub trait Interactor {
+pub trait Identifier {
         type Identifier;
-        type Error;
 
         fn get_identifier(&self) -> Self::Identifier;
+}
 
-        fn recv<T, R>(&self, message: Message<T, R>) -> Result<(), Self::Error>;
-        fn send<T, R>(&self, message: Message<T, R>) -> Result<(), Self::Error>;
+pub trait Interactor {
+        type Error;
+
+        fn recv(&self) -> Result<(), Self::Error>;
+        fn send(&self) -> Result<(), Self::Error>;
 }
