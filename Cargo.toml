@@ -7,12 +7,16 @@ edition = "2021"
 [lib]
 crate-type = [ "lib" ]
 
+[workspace]
+members = [ "crates/*" ]
+
 [features]
 default = [ ]
+defaults = [ "dep:pulsar-defaults" ]
 
 [dependencies]
-ahash = "*"
-tower = "*"
+pulsar-defaults = { path = "./crates/pulsar-defaults", optional = true }
+pulsar-core = { path = "./crates/pulsar-core" }
 
 [dev-dependencies]
 criterion = "0.4.0"

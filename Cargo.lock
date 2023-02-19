@@ -383,9 +383,25 @@ dependencies = [
 name = "pulsar"
 version = "0.1.0"
 dependencies = [
- "ahash",
  "criterion",
+ "pulsar-core",
+ "pulsar-defaults",
+]
+
+[[package]]
+name = "pulsar-core"
+version = "0.1.0"
+dependencies = [
+ "ahash",
  "tower",
+]
+
+[[package]]
+name = "pulsar-defaults"
+version = "0.1.0"
+dependencies = [
+ "ahash",
+ "pulsar-core",
 ]
 
 [[package]]
