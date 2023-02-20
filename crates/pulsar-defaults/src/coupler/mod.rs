@@ -1,4 +1,3 @@
-use pulsar::connector::Coupler;
 use std::error::Error as ErrorTrait;
 use std::sync::mpsc::{ Receiver, Sender, channel };
 
@@ -18,5 +17,3 @@ impl DefaultCoupler {
                 self.sender.clone()
         }
 }
-
-impl Coupler for DefaultCoupler { }

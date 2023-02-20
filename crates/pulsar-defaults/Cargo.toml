@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 pulsar = { path = "../pulsar-core", package = "pulsar-core" }
 ahash = "*"
+tokio = { version = "*", features = [ "net" ] }
+async-trait = "0.1.64"

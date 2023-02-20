@@ -1,5 +1,6 @@
 use crate::message::Message;
 use tower::Service;
+use std::any::Any;
 
 pub trait Router {
         type RequestTypes;
@@ -9,8 +10,8 @@ pub trait Router {
         type Error;
 
         // Call the router with a message, and let the router decide which service the message goes to
-        fn call(&self, message: Message<Self::RequestTypes, Self::DataTypes>) -> Result<Option<Message<Self::ResponseTypes, Self::DataTypes>>, Self::Error>;
+        fn call(&self, message: impl Message) -> Result<Option<Box<dyn Any>>, Self::Error>;
 
-        fn add_service(&mut self, service: impl Service<Message<Self::RequestTypes, Self::DataTypes>, Response = Option<Message<Self::ResponseTypes, Self::DataTypes>>, Future = Self::Future>) -> Result<(), Self::Error>;
-        fn remove_service(&mut self, service: impl Service<Message<Self::RequestTypes, Self::DataTypes>, Response = Option<Message<Self::ResponseTypes, Self::DataTypes>>, Future = Self::Future>) -> Result<(), Self::Error>;
+        fn add_service(&mut self, service: impl Service<Box<dyn Any>, Response = Option<Box<dyn Any>>, Future = Self::Future>) -> Result<(), Self::Error>;
+        fn remove_service(&mut self, service: impl Service<Box<dyn Any>, Response = Option<Box<dyn Any>>, Future = Self::Future>) -> Result<(), Self::Error>;
 }

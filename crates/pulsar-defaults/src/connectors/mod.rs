@@ -1,55 +1,81 @@
-use pulsar::{
-        interactor::{ Interactor, Identifier },
-        connector::{ Coupler, Connector }
-};
-use crate::coupler::DefaultCoupler;
-use std::any::Any;
-use std::net::{ UdpSocket, SocketAddr };
-use std::error::Error as ErrorTrait;
-use ahash::{ HashMap, HashMapExt };
+pub mod udp;
 
-pub struct UdpSocketConnector<Id, In> {
-        addr: SocketAddr,
-        socket: UdpSocket,
-        interactors: HashMap<Id, In>
-}
+// use pulsar::{
+//         message::{ Message, MessageCreator },
+//         interactor::{ Interactor, Identifier },
+//         connector::{ Coupler, Connector }
+// };
+// use crate::coupler::DefaultCoupler;
+// use async_trait::async_trait;
+// use tokio::{ io, net::UdpSocket };
+// use std::{
+//         cmp::{ Eq, PartialEq },
+//         hash::Hash,
+//         any::Any,
+//         net::SocketAddr,
+//         error::Error as ErrorTrait,
+//         sync::mpsc::Sender
+// };
+// use ahash::{ HashMap, HashMapExt };
 
-impl<Id, In> UdpSocketConnector<Id, In> {
-        pub fn new(addr: SocketAddr) -> std::io::Result<UdpSocketConnector<Id, In>> {
-                let socket = UdpSocket::bind(addr)?;
-                let interactors: HashMap<Id, In> = HashMap::new();
+// pub struct UdpSocketConnector<Id, In> {
+//         addr: SocketAddr,
+//         socket: UdpSocket,
+//         interactors: HashMap<Id, (In, Sender<Box<dyn Any>>)>
+// }
 
-                Ok(UdpSocketConnector { addr, socket, interactors })
-        }
-}
+// impl<Id, In> UdpSocketConnector<Id, In> {
+//         pub async fn new(addr: SocketAddr) -> io::Result<UdpSocketConnector<Id, In>> {
+//                 let socket = UdpSocket::bind(addr).await?;
+//                 let interactors: HashMap<Id, (In, Sender<()>)> = HashMap::new();
 
-impl<Id, In> Connector for UdpSocketConnector<Id, In>
-where
-        Id: Identifier<Identifier = dyn Any>,
-        In: Interactor<Error = dyn ErrorTrait>
-{
-        type Error = Box<dyn ErrorTrait>;
-        type Coupler = DefaultCoupler;
+//                 Ok(UdpSocketConnector { addr, socket, interactors })
+//         }
+// }
 
-        fn prepare(&self) -> Result<(), Self::Error> {
-                // Nothing to prepare
-                Ok(())
-        }
+// #[async_trait]
+// impl<Id, In> Connector for UdpSocketConnector<Id, In>
+// where
+//         Id: Identifier<Identifier = dyn Any> + From<SocketAddr> + Hash + Eq + PartialEq,
+//         In: Interactor<RequestTypes = dyn Any, ResponseTypes = dyn Any, DataTypes = dyn Any, Future = dyn Any, Error = dyn ErrorTrait> + Identifier<Identifier = dyn Any>
+// {
+//         type Error = Box<dyn ErrorTrait>;
+//         type Coupler = DefaultCoupler;
 
-        fn ready(&self) -> bool {
-                // Nothing to prepare
-                true
-        }
+//         fn prepare(&self) -> Result<(), Self::Error> {
+//                 // Nothing to prepare
+//                 Ok(())
+//         }
 
-        fn serve(&self) -> Result<(), Self::Error> {
-                todo!()
-        }
+//         fn ready(&self) -> bool {
+//                 // Nothing to prepare
+//                 true
+//         }
 
-        fn add_interactor<I>(&mut self, interactor: I) -> Result<Self::Coupler, Self::Error> {
-                todo!()
-        }
+//         async fn serve(&self) -> io::Result<()> {
+//                 loop {
+//                         let mut buf: Vec<u8> = Vec::new();
+//                         let (len, addr) = self.socket.recv_from(&mut buf).await?;
 
-        fn delete_interactor<I>(&mut self, interactor: I) -> Result<(), Self::Error> {
-                todo!()
-        }
-}
+//                         let identifier = Id::from(addr);
+//                         match self.interactors.get(&identifier) {
+//                                 Some((interactor, sender)) => {
+//                                         let message = interactor.create_message(buf);
+//                                         match sender.send(message) {
+//                                                 Ok(()) => { },
+//                                                 Err(err) => interactor.handle_error(message, Box::new(err))
+//                                         }
+//                                 },
+//                                 None => { }
+//                         };
+//                 }
+//         }
+
+//         fn add_interactor<I>(&mut self, interactor: I) -> Result<Self::Coupler, Self::Error> {
+//                 todo!()
+//         }
+
+//         fn delete_interactor<I>(&mut self, interactor: I) -> Result<(), Self::Error> {
+//                 todo!()
+//         }
+// }

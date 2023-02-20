@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 ahash = "*"
 tower = "*"
+tokio = { version = "*", features = [ "net" ] }
+async-trait = "0.1.64"

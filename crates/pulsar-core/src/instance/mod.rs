@@ -1,5 +1,5 @@
 use ahash::{ HashMap, HashMapExt };
-use crate::{ connector::{ Coupler, Connector }, interactor::{ Interactor, Identifier, router::Router } };
+use crate::{ connector::Connector, interactor::{ Interactor, Identifier, router::Router } };
 use std::{
         any::Any,
         sync::{ Arc, Mutex },
@@ -13,7 +13,7 @@ pub struct Instance<C, I> {
 
 impl<C, I> Instance<C, I>
 where
-        C: Connector<Error = dyn ErrorTrait, Coupler = dyn Coupler>,
+        C: Connector<Error = dyn ErrorTrait, Coupler = dyn Any>,
         I: Interactor<Error = dyn ErrorTrait> + Identifier<Identifier = dyn Any> + Router<RequestTypes = dyn Any, ResponseTypes = dyn Any, DataTypes = dyn Any, Error = dyn ErrorTrait>
 {
         pub fn new() -> Instance<C, I> {

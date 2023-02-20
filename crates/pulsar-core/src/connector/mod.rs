@@ -1,16 +1,22 @@
-use std::error::Error as ErrorTrait;
-use crate::interactor::Interactor;
+use std::{
+        any::Any,
+        error::Error as ErrorTrait
+};
+use async_trait::async_trait;
+use crate::{ interactor::{ Interactor, Identifier }, message::Message };
+use tokio::io;
 
-pub trait Coupler { }
-
+/// `pulsar::connector::Connector`s are just networking implementations that allow
+/// `pulsar::interactor::Interactor`s to connect to the game server
+/// to send & receive events.
 pub trait Connector {
         type Error;
         type Coupler;
+        type RawDataType;
 
         fn prepare(&self) -> Result<(), Self::Error>;
         fn ready(&self) -> bool;
-        fn serve(&self) -> Result<(), Self::Error>;
 
-        fn add_interactor<I>(&mut self, interactor: I) -> Result<Self::Coupler, Self::Error>;
-        fn delete_interactor<I>(&mut self, interactor: I) -> Result<(), Self::Error>;
+        /// T is a type that implements `pulsar::message::Message`, `std::convert::From<Self::RawDataType>` & `std::marker::Copy`.
+        fn serve<T: Message + From<Self::RawDataType> + Copy + 'static>(&self) -> Result<(), Self::Error>;
 }
