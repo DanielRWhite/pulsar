@@ -1,20 +1,21 @@
-use std::{
-        any::Any,
-        error::Error as ErrorTrait
-};
-use async_trait::async_trait;
-use crate::{ interactor::{ Interactor, Identifier }, message::Message };
-use tokio::io;
+use crate::message::Message;
 
+/// [Poll][`crate::connector::Poll`] is a future, which returns
+/// [`Ready<T>`][`crate::connector::Poll::Ready`], [`Pending`][`crate::connector::Poll::Pending`], or [`Error<E>`][`crate::connector::Poll::Error`].
 pub enum Poll<T, E> {
+        /// Returns `T` when future is done. `T` can be any type.
         Ready(T),
+
+        /// Future has not completed yet, and the result is pending.
         Pending,
+        
+        /// Future has encounted an error, and an error of type `E` is returned.
         Error(E)
 }
 
 /// [Connector][`crate::connector::Connector`]s are just networking implementations that allow
 /// [Interactor][`crate::interactor::Interactor`]s to connect to the game server
-/// to send & receive events.
+/// to send & receive [Message][`crate::message::Message`]s.
 ///
 /// Your connector should have its own system of adding/removing Interactors based on
 /// connections/disconnections on the connector. These system bounds are not part of the
@@ -25,11 +26,6 @@ pub enum Poll<T, E> {
 pub trait Connector {
         /// The error type your [Connector][`crate::connector::Connector`] will return upon encountering an error of any kind
         type Error;
-
-        /// The type `YourConnector::prepare` returns in its future. This is usually the struct you
-        /// are implementing [Connector][`crate::connector::Connector`] for, and acts as a pseudo `fn new() -> Self` function
-        /// that is instead a future, that could possibly fail.
-        type Ready;
 
         /// The raw data type for incoming data to your connector. Used to ensure that all [Interactor][`crate::interactor::Interactor`]s understand
         /// the same [Message][`crate::message::Message`] and implement `From<`[`Self::RawDataType`]`>` that this traits [serve][`crate::connector::Connector::serve`] function
@@ -42,7 +38,7 @@ pub trait Connector {
         /// to start the connector
         ///
         /// If the prepare returns an error, it is handled by `YourConnector::handle_error(error)`
-        fn prepare() -> Poll<Self::Ready, Self::Error>;
+        fn prepare() -> Poll<Self, Self::Error>;
 
         /// If any error occurs in this trait function, it is best to panic, since it is an unknown errror
         /// and possible malicious in nature, and could alert to more serious issues such as an attacker
@@ -57,6 +53,6 @@ pub trait Connector {
         /// T is a type that implements [Message][`crate::message::Message`], [`From`][`std::convert::From`]`<`[`Self::RawDataType`]`>` & [Copy][`std::marker::Copy`].
         ///
         /// Message is a generic wrapper of data, that is created in your Connector, and understood by all [Interactor][`crate::interactor::Interactor`]s
-        /// that are connected to your connector.
+        /// that are connected to your [Connector][`crate::connector::Connector`].
         fn serve<T: Message + From<Self::RawDataType> + Copy + 'static>(&self) -> Result<(), Self::Error>;
 }
