@@ -13,7 +13,7 @@ pub struct Instance<C, I> {
 
 impl<C, I> Instance<C, I>
 where
-        C: Connector<Error = dyn ErrorTrait, Coupler = dyn Any>,
+        C: Connector<Error = dyn ErrorTrait>,
         I: Interactor<Error = dyn ErrorTrait> + Identifier<Identifier = dyn Any> + Router<RequestTypes = dyn Any, ResponseTypes = dyn Any, DataTypes = dyn Any, Error = dyn ErrorTrait>
 {
         pub fn new() -> Instance<C, I> {
