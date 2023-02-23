@@ -1,40 +1,29 @@
-use ahash::{ HashMap, HashMapExt };
-use crate::{ connector::Connector, interactor::{ Interactor, Identifier } };
-use std::{
-        any::Any,
-        sync::{ Arc, Mutex },
-        error::Error as ErrorTrait
-};
+pub trait Instance {
+        /// This is the type of your [Connector][`crate::connector::Connector`]s.
+        /// Usually, this is &[Connector][`crate::connector::Connector`], but
+        /// you can set it to whatever you need it to be.
+        type ConnectorType;
 
-pub struct Instance<C, I> {
-        connectors: Vec<Arc<Mutex<C>>>,
-        interactors: HashMap<String, Arc<Mutex<I>>>
-}
+        /// This is the same as [ConnectorType][`Self::ConnectorType`], but it is
+        /// for [Interactor][`crate::interactor::Interactor`]s. Usually this is
+        /// set to [Arc][`std::sync::Arc`]<[Mutex][`std::sync::Mutex`]<[Interactor][`crate::interactor::Interactor`]>>
+        /// but you can set it to whatever you need it to be.
+        type InteractorType;
 
-impl<C, I> Instance<C, I>
-where
-        C: Connector<Error = dyn ErrorTrait>,
-        I: Interactor<Error = dyn ErrorTrait> + Identifier<Identifier = dyn Any>
-{
-        pub fn new() -> Instance<C, I> {
-                let connectors: Vec<Arc<Mutex<C>>> = Vec::new();
-                let interactors: HashMap<String, Arc<Mutex<I>>> = HashMap::new();
+        /// Generic error type that your instance will respond with when it
+        /// encounters an error of any kind.
+        type Error;
 
-                Instance { connectors, interactors }
-        }
+        /// Get the [Connector][`crate::connector::Connector`]s this 
+        /// [Instance][`crate::instance::Instance`] has registered to it.
+        fn get_connectors(&self) -> Vec<Self::ConnectorType>;
+        
+        /// Get the [Interactor][`crate::interactor::Interactor`]s this 
+        /// [Instance][`crate::instance::Instance`] has connected to its
+        /// registered [Connector][`crate::connector::Connector`]s.
+        fn get_interactors(&self) -> Vec<Self::InteractorType>;
 
-        pub fn get_connectors(&self) -> Vec<Arc<Mutex<C>>> {
-                self.connectors.iter().map(Arc::clone).collect()
-        }
-
-        pub fn get_interactors(&self) -> Vec<Arc<Mutex<I>>> {
-                self.interactors.values().map(Arc::clone).collect()
-        }
-
-        pub fn get_interactor(&self, name: &str) -> Option<Arc<Mutex<I>>> {
-                match self.interactors.get(&name.to_string()) {
-                        Some(arc) => Some(Arc::clone(arc)),
-                        None => None    
-                }
-        }
+        /// Start the instance, serving each [Connector][`crate::connector::Connector`]
+        /// in a separate thread, while also starting the game engine.
+        fn start(&self) -> Result<(), Self::Error>;
 }

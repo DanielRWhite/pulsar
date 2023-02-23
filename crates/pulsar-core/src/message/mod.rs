@@ -1,4 +1,4 @@
 /// Blank implementation for a message that is passed throughout the Pulsar engine, originating from the
-/// Connector, which implements a custom `From<CustomDataType>` for any struct that implements this
-/// `pulsar_core::message::Message` trait.
+/// [Connector][`crate::connector::Connector`], which implements a custom [From][`std::convert::From`]
+/// for any struct that implements this [Message][`crate::message::Message`] trait.
 pub trait Message { }

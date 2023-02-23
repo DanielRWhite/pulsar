@@ -38,7 +38,7 @@ pub trait Connector {
         /// to start the connector
         ///
         /// If the prepare returns an error, it is handled by `YourConnector::handle_error(error)`
-        fn prepare() -> Poll<Self, Self::Error>;
+        fn prepare() -> Poll<Self, Self::Error> where Self: Sized;
 
         /// If any error occurs in this trait function, it is best to panic, since it is an unknown errror
         /// and possible malicious in nature, and could alert to more serious issues such as an attacker
