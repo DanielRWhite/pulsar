@@ -5,18 +5,23 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-crate-type = [ "lib" ]
-
-[workspace]
-members = [ "crates/*" ]
+crate-type = [ "rlib" ]
 
 [features]
-default = [ ]
-defaults = [ "dep:pulsar-defaults" ]
+default = [ "core" ]
+core = [ "dep:core" ]
+controller = [ "core", "dep:controller" ]
+listener = [ "core", "dep:listener" ]
+accelerator = [ "core", "dep:accelerator" ]
 
 [dependencies]
-pulsar-defaults = { path = "./crates/pulsar-defaults", optional = true }
-pulsar-core = { path = "./crates/pulsar-core" }
+ahash = "0.8.3"
+
+core = { path = "crates/core" }
+controller = { path = "crates/controller", optional = "true" }
+listener = { path = "crates/listener", optional = "true" }
+accelerator = { path = "crates/accelerator", optional = "true" }
+
 
 [dev-dependencies]
 criterion = "0.4.0"
