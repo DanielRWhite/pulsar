@@ -1,12 +1,12 @@
 #[cfg(all(feature = "controller", feature = "listener"))]
 compile_error!("Please ensure that you are only enabling the feature for one of the two mutually exclusive instance types, not both: Controller & Listener.");
 
-#[cfg(not(feature = "stdlib"))]
-compile_error!("The pulsar feature \"stdlib\" must be enabled at the very minimum for this package to compile.");
+#[cfg(not(feature = "core"))]
+compile_error!("The pulsar feature \"core\" must be enabled at the very minimum for this package to compile.");
 
 #[cfg(feature = "controller")]
 mod prelude {
-        pub use stdlib::{
+        pub use core::{
                 component::Component,
                 entity::Entity,
                 system::System,
@@ -20,16 +20,16 @@ mod prelude {
 
 #[cfg(feature = "listener")]
 mod prelude {
-        pub use stdlib::{ Entity, Component, System, World };
+        pub use core::{ Entity, Component, System, World };
         pub use listener::Listener;
 
         #[cfg(feature = "accelerator")]
         pub use accelerator::Accelerator;
 }
 
-#[cfg(all(not(feature = "controller"), not(feature = "listener"), feature = "stdlib"))]
+#[cfg(all(not(feature = "controller"), not(feature = "listener"), feature = "core"))]
 mod prelude {
-        pub use stdlib::{ Entity, Component, System, World };
+        pub use core::{ Entity, Component, System, World };
 
         #[cfg(feature = "accelerator")]
         pub use accelerator::Accelerator;
