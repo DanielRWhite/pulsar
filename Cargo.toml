@@ -18,7 +18,7 @@ listener = [ "core", "dep:listener" ]
 accelerator = [ "core", "dep:accelerator" ]
 
 [dependencies]
-core = { path = "crates/core" }
+core_lib = { path = "crates/core-lib", package = "core-lib" }
 controller = { path = "crates/controller", optional = true }
 listener = { path = "crates/listener", optional = true }
 accelerator = { path = "crates/accelerator", optional = true }

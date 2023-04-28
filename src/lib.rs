@@ -6,7 +6,7 @@ compile_error!("The pulsar feature \"core\" must be enabled at the very minimum 
 
 #[cfg(feature = "controller")]
 mod prelude {
-        pub use core::{
+        pub use core_lib::{
                 component::Component,
                 entity::Entity,
                 system::System,
@@ -20,7 +20,7 @@ mod prelude {
 
 #[cfg(feature = "listener")]
 mod prelude {
-        pub use core::{
+        pub use core_lib::{
                 component::Component,
                 entity::Entity,
                 system::System,
@@ -34,7 +34,7 @@ mod prelude {
 
 #[cfg(all(not(feature = "controller"), not(feature = "listener"), feature = "core"))]
 mod prelude {
-        pub use core::{
+        pub use core_lib::{
                 component::Component,
                 entity::Entity,
                 system::System,
