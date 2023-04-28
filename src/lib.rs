@@ -20,7 +20,12 @@ mod prelude {
 
 #[cfg(feature = "listener")]
 mod prelude {
-        pub use core::{ Entity, Component, System, World };
+        pub use core::{
+                component::Component,
+                entity::Entity,
+                system::System,
+                world::World,
+        };
         pub use listener::Listener;
 
         #[cfg(feature = "accelerator")]
@@ -29,8 +34,13 @@ mod prelude {
 
 #[cfg(all(not(feature = "controller"), not(feature = "listener"), feature = "core"))]
 mod prelude {
-        pub use core::{ Entity, Component, System, World };
-
+        pub use core::{
+                component::Component,
+                entity::Entity,
+                system::System,
+                world::World,
+        };
+        
         #[cfg(feature = "accelerator")]
         pub use accelerator::Accelerator;
 }

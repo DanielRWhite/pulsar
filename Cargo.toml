@@ -12,18 +12,16 @@ crate-type = [ "rlib" ]
 
 [features]
 default = [ "core" ]
-core = [ "dep:core" ]
+core = [ ]
 controller = [ "core", "dep:controller" ]
 listener = [ "core", "dep:listener" ]
 accelerator = [ "core", "dep:accelerator" ]
 
 [dependencies]
-ahash = "0.8.3"
-
 core = { path = "crates/core" }
-controller = { path = "crates/controller", optional = "true" }
-listener = { path = "crates/listener", optional = "true" }
-accelerator = { path = "crates/accelerator", optional = "true" }
+controller = { path = "crates/controller", optional = true }
+listener = { path = "crates/listener", optional = true }
+accelerator = { path = "crates/accelerator", optional = true }
 
 
 [dev-dependencies]
