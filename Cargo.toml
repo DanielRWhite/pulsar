@@ -19,10 +19,17 @@ pulsar-defaults = { path = "./crates/pulsar-defaults", optional = true }
 pulsar-core = { path = "./crates/pulsar-core" }
 
 [dev-dependencies]
-criterion = "0.4.0"
+criterion = "0.4"
+half = "*"
+num-traits = "*"
 
 [profile.release]
 opt-level = 3
 strip = true
 lto = true
 codegen-units = 1
+
+# Benchmarks
+[[bench]]
+name = "main"
+harness = false

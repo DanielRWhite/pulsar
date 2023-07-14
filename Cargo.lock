@@ -407,6 +407,8 @@ name = "pulsar"
 version = "0.1.0"
 dependencies = [
  "criterion",
+ "half",
+ "num-traits",
  "pulsar-core",
  "pulsar-defaults",
 ]
